@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Patient, Consultation, api } from '../services/mock-db';
 import { ConsultationForm } from './ConsultationForm';
 import { PhysicalExamForm } from './PhysicalExamForm';
@@ -7,13 +6,15 @@ import { FormSection } from './FormSection';
 
 interface ConsultationHistoryProps {
     patient: Patient;
-    isPrinting?: boolean; // Added for PDF export logic
+    isPrinting?: boolean;
 }
 
 export const ConsultationHistory: React.FC<ConsultationHistoryProps> = ({ patient, isPrinting = false }) => {
     const [consultations, setConsultations] = useState<Consultation[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isAdding, setIsAdding] = useState(false);
+    const [viewingConsultation, setViewingConsultation] = useState<Consultation | null>(null);
+    const newConsultationFormRef = useRef<HTMLFormElement>(null);
     
     const loadConsultations = () => {
         setIsLoading(true);
@@ -28,12 +29,21 @@ export const ConsultationHistory: React.FC<ConsultationHistoryProps> = ({ patien
     }, [patient.id]);
 
     const handleSaveConsultation = async () => {
-        // In a real app, you would get data from the form
+        if (!newConsultationFormRef.current) return;
+
+        const formData = new FormData(newConsultationFormRef.current);
+        const data: { [key: string]: any } = {};
+        formData.forEach((value, key) => {
+            // A more robust solution would handle nested objects and data types
+            data[key] = value;
+        });
+
         const newConsultationData = {
             patientId: patient.id,
             date: new Date().toISOString(),
-            motivo_consulta: 'Nueva consulta (datos de ejemplo)',
-            desarrollo_consulta: 'El paciente acude para una nueva evaluación.',
+            motivo_consulta: data.motivo_consulta || 'Nueva consulta (sin motivo)',
+            desarrollo_consulta: data.desarrollo_consulta || 'El paciente acude para una nueva evaluación.',
+            data: data
         };
         await api.addConsultation(newConsultationData);
         setIsAdding(false);
@@ -45,15 +55,29 @@ export const ConsultationHistory: React.FC<ConsultationHistoryProps> = ({ patien
             <div>
                 {consultations.map(consult => (
                      <div key={consult.id} className="mt-8 border-t-4 border-blue-600 pt-4">
-                        <FormSection title={`Consulta - ${new Date(consult.date).toLocaleDateString()}`}>
-                           <p className="col-span-3"><strong>Motivo:</strong> {consult.motivo_consulta}</p>
-                           <p className="col-span-3"><strong>Desarrollo:</strong> {consult.desarrollo_consulta}</p>
-                        </FormSection>
-                        {/* In a real app, you would render the full saved ConsultationForm and PhysicalExamForm data here */}
-                        <ConsultationForm />
-                        <PhysicalExamForm />
+                        <h2 className="text-xl font-semibold text-blue-700 mb-2">Consulta - {new Date(consult.date).toLocaleDateString()}</h2>
+                        <ConsultationForm data={consult.data} readOnly={true} />
+                        <PhysicalExamForm data={consult.data} readOnly={true} />
                     </div>
                 ))}
+            </div>
+        )
+    }
+    
+    if (viewingConsultation) {
+        return (
+            <div>
+                <div className="flex justify-between items-center mb-6">
+                    <div>
+                        <button onClick={() => setViewingConsultation(null)} className="text-blue-600 hover:text-blue-800 font-semibold">&larr; Volver al Historial</button>
+                        <h2 className="text-xl font-semibold text-blue-700 mt-2">Detalle de la Consulta</h2>
+                        <p className="text-sm text-gray-500">{new Date(viewingConsultation.date).toLocaleString()}</p>
+                    </div>
+                </div>
+                <div className="space-y-4">
+                   <ConsultationForm data={viewingConsultation.data} readOnly={true} />
+                   <PhysicalExamForm data={viewingConsultation.data} readOnly={true} />
+                </div>
             </div>
         )
     }
@@ -62,8 +86,10 @@ export const ConsultationHistory: React.FC<ConsultationHistoryProps> = ({ patien
         return (
             <div>
                 <h2 className="text-xl font-semibold text-blue-700 mb-6">Nueva Consulta</h2>
-                <ConsultationForm />
-                <PhysicalExamForm />
+                <form ref={newConsultationFormRef}>
+                    <ConsultationForm />
+                    <PhysicalExamForm />
+                </form>
                 <div className="flex justify-end gap-4 mt-8">
                     <button onClick={() => setIsAdding(false)} className="px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg hover:bg-gray-400 transition-colors">
                         Cancelar
@@ -90,16 +116,15 @@ export const ConsultationHistory: React.FC<ConsultationHistoryProps> = ({ patien
             ) : (
                 <div className="space-y-4">
                     {consultations.length > 0 ? consultations.map(consult => (
-                         <details key={consult.id} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                            <summary className="font-semibold flex justify-between items-center">
-                                <span>{new Date(consult.date).toLocaleString()} - {consult.motivo_consulta}</span>
-                                <span className="text-sm text-gray-500">Ver detalles</span>
-                            </summary>
-                            <div className="mt-4 pt-4 border-t">
-                                <p><strong>Desarrollo:</strong> {consult.desarrollo_consulta}</p>
-                                <p className="mt-4 text-sm text-gray-600 italic">Nota: La visualización completa del examen físico y otros detalles de la consulta se mostraría aquí.</p>
+                         <div key={consult.id} onClick={() => setViewingConsultation(consult)} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <p className="font-semibold text-gray-800">{new Date(consult.date).toLocaleString()}</p>
+                                    <p className="text-sm text-gray-600 mt-1">{consult.motivo_consulta}</p>
+                                </div>
+                                <span className="text-sm font-medium text-blue-600">Ver Consulta Completa &rarr;</span>
                             </div>
-                        </details>
+                        </div>
                     )) : <p>No hay consultas registradas para este paciente.</p>}
                 </div>
             )}

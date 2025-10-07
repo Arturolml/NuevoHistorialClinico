@@ -1,4 +1,3 @@
-
 // --- DATA TYPES ---
 
 export interface User {
@@ -67,7 +66,7 @@ export interface Consultation {
     date: string;
     motivo_consulta: string;
     desarrollo_consulta: string;
-    // ... add all other consultation and exam fields
+    data: any; // Holds a snapshot of all form fields for this consultation
 }
 
 export interface Patient {
@@ -149,6 +148,22 @@ const consultations: Consultation[] = [
         date: '2024-05-10T10:00:00Z',
         motivo_consulta: 'Seguimiento de control de hipertensión y diabetes.',
         desarrollo_consulta: 'El paciente refiere sentirse bien, sin síntomas nuevos. Adherencia al tratamiento adecuada.',
+        data: {
+            ex_peso: 75,
+            ex_talla: 170,
+            ex_temp: 36.5,
+            ex_pulso: 70,
+            ex_fr: 18,
+            ex_fc: 70,
+            ta_acostado: "120/80",
+            ta_sentado: "125/82",
+            ta_de_pie: "122/81",
+            apariencia: "Buen estado general",
+            hidratacion: "Adecuada",
+            cabeza_normal: "Normocéfalo, sin hundimientos ni exostosis.",
+            cabeza_pathological: "",
+            // ... more sample data
+        }
     },
     {
         id: 'c2',
@@ -156,6 +171,21 @@ const consultations: Consultation[] = [
         date: '2024-07-22T11:30:00Z',
         motivo_consulta: 'Dolor en rodilla derecha.',
         desarrollo_consulta: 'Inició hace 2 semanas, empeora al caminar. Se sospecha de osteoartritis. Se solicitan radiografías.',
+        data: {
+            ex_peso: 75.5,
+            ex_talla: 170,
+            ex_temp: 36.6,
+            ex_pulso: 72,
+            ex_fr: 16,
+            ex_fc: 72,
+            ta_acostado: "122/80",
+            ta_sentado: "128/85",
+            ta_de_pie: "125/83",
+            apariencia: "Adolorido, claudica al caminar",
+            hidratacion: "Adecuada",
+            ms_rodillas: "Dolor a la palpación en rodilla derecha, crepitación.",
+            // ... more sample data
+        }
     }
 ];
 
@@ -191,7 +221,7 @@ export const api = {
         return newPatient;
     },
 
-    addConsultation: async (consultationData: Omit<Consultation, 'id'>): Promise<Consultation> => {
+    addConsultation: async (consultationData: Omit<Consultation, 'id' | 'data'> & { data: any }): Promise<Consultation> => {
         await new Promise(res => setTimeout(res, 500));
         const newConsultation: Consultation = {
             id: `c${consultations.length + 1}`,
