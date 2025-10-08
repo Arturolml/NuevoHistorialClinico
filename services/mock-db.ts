@@ -3,8 +3,9 @@
 export interface User {
     id: string;
     name: string;
+    email?: string;
     passwordHash: string; // In a real app, never store plain text passwords
-    role: 'doctor';
+    role: 'doctor' | 'admin';
 }
 
 export interface PatientDemographics {
@@ -80,7 +81,8 @@ export interface Patient {
 // --- MOCK DATABASE ---
 
 const users: User[] = [
-    { id: 'doc1', name: 'Dr. House', passwordHash: 'password', role: 'doctor' }
+    { id: 'admin1', name: 'Admin', passwordHash: 'admin', role: 'admin' },
+    { id: 'doc1', name: 'Dr. House', email: 'house@example.com', passwordHash: 'password', role: 'doctor' }
 ];
 
 const patients: Patient[] = [
@@ -192,11 +194,41 @@ const consultations: Consultation[] = [
 // --- MOCK API FUNCTIONS ---
 
 export const api = {
-    login: async (name: string, password_not_hashed: string): Promise<User | null> => {
+    login: async (credential: string, password_not_hashed: string): Promise<User | null> => {
         await new Promise(res => setTimeout(res, 500)); // Simulate network delay
-        const user = users.find(u => u.name === name);
+        const user = users.find(u =>
+            (u.role === 'admin' && u.name.toLowerCase() === credential.toLowerCase()) ||
+            (u.role === 'doctor' && u.email?.toLowerCase() === credential.toLowerCase())
+        );
         if (user && user.passwordHash === password_not_hashed) {
             return user;
+        }
+        return null;
+    },
+
+    getDoctors: async (): Promise<User[]> => {
+        await new Promise(res => setTimeout(res, 300));
+        return users.filter(u => u.role === 'doctor');
+    },
+
+    addUser: async (userData: Omit<User, 'id'>): Promise<User> => {
+        await new Promise(res => setTimeout(res, 500));
+        const newUser: User = {
+            id: `user${users.length + 1}`,
+            ...userData,
+        };
+        users.push(newUser);
+        return newUser;
+    },
+    
+    updateUser: async (userId: string, updates: Partial<Omit<User, 'id'>>): Promise<User | null> => {
+        await new Promise(res => setTimeout(res, 500));
+        const userIndex = users.findIndex(u => u.id === userId);
+        if (userIndex !== -1) {
+            // In a real app, you'd be careful about merging properties.
+            // Here, we're just updating the whole user object.
+            users[userIndex] = { ...users[userIndex], ...updates };
+            return users[userIndex];
         }
         return null;
     },

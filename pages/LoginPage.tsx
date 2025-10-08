@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 
 export const LoginPage: React.FC = () => {
-  const [name, setName] = useState('Dr. House');
-  const [password, setPassword] = useState('password');
+  const [credential, setCredential] = useState('Admin');
+  const [password, setPassword] = useState('admin');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -13,9 +12,9 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    const success = await login(name, password);
+    const success = await login(credential, password);
     if (!success) {
-      setError('Nombre de usuario o contraseña incorrectos.');
+      setError('Correo, nombre de usuario o contraseña incorrectos.');
     }
     setIsLoading(false);
   };
@@ -30,16 +29,17 @@ export const LoginPage: React.FC = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="name" className="sr-only">Nombre de Usuario</label>
+              <label htmlFor="credential" className="sr-only">Correo electrónico o Nombre de usuario</label>
               <input
-                id="name"
-                name="name"
+                id="credential"
+                name="credential"
                 type="text"
+                autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Nombre de Usuario"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
+                placeholder="Correo electrónico o Nombre de usuario"
+                value={credential}
+                onChange={(e) => setCredential(e.target.value)}
               />
             </div>
             <div>
@@ -48,8 +48,9 @@ export const LoginPage: React.FC = () => {
                 id="password"
                 name="password"
                 type="password"
+                autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white"
                 placeholder="Contraseña"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

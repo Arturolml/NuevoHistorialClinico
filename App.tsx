@@ -4,6 +4,7 @@ import { useAuth } from './hooks/useAuth';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PatientDetailPage } from './pages/PatientDetailPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
 // For jsPDF and html2canvas from CDN
 declare global {
@@ -20,6 +21,11 @@ const App: React.FC = () => {
     if (!user) {
       return <LoginPage />;
     }
+    
+    if (user.role === 'admin') {
+      return <AdminDashboardPage />;
+    }
+
     if (selectedPatient) {
       return <PatientDetailPage patient={selectedPatient} onBack={() => clearSelectedPatient()} />;
     }

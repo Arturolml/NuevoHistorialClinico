@@ -5,7 +5,7 @@ import { User, Patient, api } from '../services/mock-db';
 interface AuthContextType {
   user: User | null;
   selectedPatient: Patient | null;
-  login: (name: string, pass: string) => Promise<boolean>;
+  login: (credential: string, pass: string) => Promise<boolean>;
   logout: () => void;
   selectPatient: (patient: Patient) => void;
   clearSelectedPatient: () => void;
@@ -17,8 +17,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
 
-  const login = async (name: string, pass: string) => {
-    const loggedInUser = await api.login(name, pass);
+  const login = async (credential: string, pass: string) => {
+    const loggedInUser = await api.login(credential, pass);
     if (loggedInUser) {
       setUser(loggedInUser);
       return true;

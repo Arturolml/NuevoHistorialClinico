@@ -5,9 +5,9 @@ import { RadioInput } from './RadioInput';
 
 const MedicationRow: React.FC<{index: number, data?: any, readOnly?: boolean}> = ({ index, data, readOnly }) => (
     <div className="col-span-1 md:col-span-2 lg:col-span-3 grid grid-cols-1 sm:grid-cols-5 gap-2 items-center border-b pb-2">
-        <input type="text" placeholder="Medicamento" name={`med_name_${index}`} defaultValue={data?.[`med_name_${index}`]} readOnly={readOnly} className={`sm:col-span-2 w-full px-3 py-2 border border-gray-300 rounded-md ${readOnly ? 'bg-gray-100' : ''}`} />
-        <input type="text" placeholder="Dosis" name={`med_dose_${index}`} defaultValue={data?.[`med_dose_${index}`]} readOnly={readOnly} className={`w-full px-3 py-2 border border-gray-300 rounded-md ${readOnly ? 'bg-gray-100' : ''}`} />
-        <input type="text" placeholder="Tiempo de uso" name={`med_duration_${index}`} defaultValue={data?.[`med_duration_${index}`]} readOnly={readOnly} className={`w-full px-3 py-2 border border-gray-300 rounded-md ${readOnly ? 'bg-gray-100' : ''}`} />
+        <input type="text" placeholder="Medicamento" name={`med_name_${index}`} defaultValue={data?.[`med_name_${index}`]} readOnly={readOnly} className={`sm:col-span-2 w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 ${readOnly ? 'bg-gray-100' : ''}`} />
+        <input type="text" placeholder="Dosis" name={`med_dose_${index}`} defaultValue={data?.[`med_dose_${index}`]} readOnly={readOnly} className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 ${readOnly ? 'bg-gray-100' : ''}`} />
+        <input type="text" placeholder="Tiempo de uso" name={`med_duration_${index}`} defaultValue={data?.[`med_duration_${index}`]} readOnly={readOnly} className={`w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 ${readOnly ? 'bg-gray-100' : ''}`} />
         <div className="flex items-center space-x-4">
             <label className="flex items-center">
                 <input type="radio" name={`prescrito-${index}`} value="prescribed" defaultChecked={data?.[`prescrito-${index}`] === 'prescribed'} disabled={readOnly} className="form-radio"/>

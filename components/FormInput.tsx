@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface FormInputProps {
@@ -24,7 +23,7 @@ export const FormInput: React.FC<FormInputProps> = ({ label, type = 'text', plac
         placeholder={placeholder || `Ingrese ${label.toLowerCase()}`}
         defaultValue={defaultValue}
         readOnly={readOnly}
-        className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ${readOnly ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+        className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 bg-white text-gray-900 placeholder-gray-500 ${readOnly ? 'bg-gray-100 cursor-not-allowed' : ''}`}
       />
     </div>
   );
@@ -53,7 +52,7 @@ export const TextAreaInput: React.FC<TextAreaInputProps> = ({ label, placeholder
                 placeholder={placeholder || `Ingrese ${label.toLowerCase()}`}
                 defaultValue={defaultValue}
                 readOnly={readOnly}
-                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 ${readOnly ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                className={`w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-150 bg-white text-gray-900 placeholder-gray-500 ${readOnly ? 'bg-gray-100 cursor-not-allowed' : ''}`}
             />
         </div>
     );

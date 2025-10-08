@@ -6,10 +6,10 @@ const ExamRow: React.FC<{ area: string, name: string, data?: any, readOnly?: boo
     <div className="contents">
         <span className="font-medium text-sm text-gray-700 py-2 border-b border-gray-200">{area}</span>
         <div className="py-2 border-b border-gray-200">
-            <input type="text" name={`${name}_normal`} defaultValue={data?.[`${name}_normal`]} readOnly={readOnly} placeholder="Normal" className={`w-full px-2 py-1 border border-gray-300 rounded-md ${readOnly ? 'bg-gray-100' : ''}`} />
+            <input type="text" name={`${name}_normal`} defaultValue={data?.[`${name}_normal`]} readOnly={readOnly} placeholder="Normal" className={`w-full px-2 py-1 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 ${readOnly ? 'bg-gray-100' : ''}`} />
         </div>
         <div className="py-2 border-b border-gray-200">
-            <input type="text" name={`${name}_pathological`} defaultValue={data?.[`${name}_pathological`]} readOnly={readOnly} placeholder="Patológico" className={`w-full px-2 py-1 border border-gray-300 rounded-md ${readOnly ? 'bg-gray-100' : ''}`} />
+            <input type="text" name={`${name}_pathological`} defaultValue={data?.[`${name}_pathological`]} readOnly={readOnly} placeholder="Patológico" className={`w-full px-2 py-1 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 ${readOnly ? 'bg-gray-100' : ''}`} />
         </div>
     </div>
 );
