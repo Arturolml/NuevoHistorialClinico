@@ -1,21 +1,13 @@
 {
   "name": "clinical-history-app",
   "version": "1.0.0",
-  "description": "Full-stack application for managing geriatric clinical history.",
-  "main": "server.js",
+  "description": "A comprehensive digital form to consolidate and manage geriatric patient clinical history.",
+  "main": "index.html",
   "scripts": {
-    "start": "node server.js",
-    "dev:frontend": "serve -l 3000",
-    "dev:backend": "node server.js",
-    "dev": "concurrently \"npm:dev:frontend\" \"npm:dev:backend\""
+    "dev": "serve -l 3000"
   },
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "mysql2": "^3.10.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "concurrently": "^8.2.2",
     "serve": "^14.2.3"
   }
 }
