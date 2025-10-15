@@ -61,6 +61,32 @@ export interface PatientHistory {
     };
 }
 
+export interface PatientSyndromes {
+    hist_caidas: 'si' | 'no';
+    deficit_visual: 'si' | 'no';
+    deficit_auditivo: 'si' | 'no';
+    patologia_dental: 'si' | 'no';
+    incon_urinaria: 'si' | 'no';
+    incon_fecal: 'si' | 'no';
+    estrenimiento: 'si' | 'no';
+    depresion: 'si' | 'no';
+    demencia: 'si' | 'no';
+    sd_confusional: 'si' | 'no';
+    inmovilismo: 'si' | 'no';
+    ulceras: 'si' | 'no';
+    polifarmacia: 'si' | 'no';
+    queja_memoria: 'si' | 'no';
+    osteoporosis: 'si' | 'no';
+    func_antes: number;
+    func_ingreso: number;
+    psi_antes: number;
+    psi_ingreso: number;
+    peso_actual: number;
+    peso_ideal: number;
+    peso_diferencia: string;
+}
+
+
 export interface Consultation {
     id: string;
     patientId: string;
@@ -75,6 +101,7 @@ export interface Patient {
     doctorId: string;
     demographics: PatientDemographics;
     history: PatientHistory;
+    syndromes: PatientSyndromes;
 }
 
 
@@ -139,6 +166,30 @@ const patients: Patient[] = [
                 hijos_info: '2 hijos vivos, sanos.',
                 neuro_psi: 'Ninguno',
             },
+        },
+        syndromes: {
+            hist_caidas: 'si',
+            deficit_visual: 'si',
+            deficit_auditivo: 'no',
+            patologia_dental: 'si',
+            incon_urinaria: 'no',
+            incon_fecal: 'no',
+            estrenimiento: 'si',
+            depresion: 'no',
+            demencia: 'no',
+            sd_confusional: 'no',
+            inmovilismo: 'no',
+            ulceras: 'no',
+            polifarmacia: 'si',
+            queja_memoria: 'si',
+            osteoporosis: 'no',
+            func_antes: 3,
+            func_ingreso: 2,
+            psi_antes: 1,
+            psi_ingreso: 1,
+            peso_actual: 75,
+            peso_ideal: 70,
+            peso_diferencia: '+7%',
         }
     }
 ];

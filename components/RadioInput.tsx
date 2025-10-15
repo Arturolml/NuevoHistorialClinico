@@ -39,6 +39,7 @@ export const RadioInput: React.FC<RadioInputProps> = ({ label, name, showDescrib
       {showDescribe && selectedValue === 'si' && (
         <input
           type="text"
+          name={`${name}_description`}
           placeholder="Describir..."
           defaultValue={defaultValue?.description}
           readOnly={readOnly}

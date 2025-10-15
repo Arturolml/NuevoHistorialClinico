@@ -14,8 +14,7 @@ export const PatientInfo: React.FC<PatientInfoProps> = ({ patient }) => {
         <div>
             <IdentificationForm patient={patient.demographics} readOnly={true} />
             <HistoryForm history={patient.history} readOnly={true} />
-            {/* The syndromes form would also need to be adapted to be read-only with default values if it were part of the static record */}
-            <GeriatricSyndromesForm /> 
+            <GeriatricSyndromesForm data={patient.syndromes} readOnly={true} /> 
         </div>
     );
 };
